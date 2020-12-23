@@ -5,10 +5,12 @@ from rest_framework import status
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Stock
 from .serializers import *
+from django.db import close_old_connections
 
 
 @api_view(["GET", "POST"])
 def stocks_list(request):
+    close_old_connections()
     """
     List of Stocks.
     """
@@ -45,6 +47,7 @@ def stocks_list(request):
 
 @api_view(["GET", "PUT", "DELETE"])
 def stock_detail(request, pk):
+    close_old_connections()
     try:
         stock = Stock.objects.get(pk=pk)
     except Stock.DoesNotExist:

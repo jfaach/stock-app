@@ -5,6 +5,7 @@ from stock_email.sender import Email
 from scheduler.models import Scheduler
 from datetime import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
+from django.db import close_old_connections
 
 running_job = None
 
@@ -21,8 +22,11 @@ def generate_message(symbol, price, price_min=None, price_max=None):
 
 
 def update_stock():
+    close_old_connections()
     stocks = Stock.objects.all()
     for stock in stocks:
+        print(stock)
+        close_old_connections()
         try:
             df = inv.get_stock_recent_data(stock=stock.symbol, country="brazil")
             price = df.iloc[-1, :][0]
@@ -33,7 +37,7 @@ def update_stock():
                     message = generate_message(
                         symbol=stock.symbol, price=price, price_min=stock_user.price_min
                     )
-                    email = sender.Email(
+                    email = Email(
                         "jvfacholli@gmail.com",
                         stock_user.user.email,
                         "Atualizacao Preco",
@@ -44,7 +48,7 @@ def update_stock():
                     message = generate_message(
                         symbol=stock.symbol, price=price, price_max=stock_user.price_max
                     )
-                    email = sender.Email(
+                    email = Email(
                         "jvfacholli@gmail.com",
                         stock_user.user.email,
                         "Atualizacao Preco",
@@ -52,7 +56,8 @@ def update_stock():
                     )
                     email.send()
         except Exception as e:
-            pass
+            print("Error", str(e))
+    close_old_connections()
 
 
 def update_timer(minutes):

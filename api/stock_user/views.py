@@ -7,11 +7,12 @@ from rest_framework.response import Response
 from stocks.models import Stock
 from .models import StockUser
 from rest_framework import status
-
+from django.db import close_old_connections
 
 # Create your views here.
 @api_view(["GET"])
 def stock_user_list(request):
+    close_old_connections()
     data = []
     nextPage = 1
     previousPage = 1
@@ -45,9 +46,10 @@ def stock_user_list(request):
 
 @api_view(["POST"])
 def save_stock(request):
+    close_old_connections()
     if request.method == "POST":
         user = request.user.id
-        stock = request.data["stock"]
+        stock = request.data["stock"].upper()
         stocks = Stock.objects.filter(symbol=stock)
         if len(stocks) == 0:
             return Response("Stock not exist", status=status.HTTP_400_BAD_REQUEST)
@@ -67,6 +69,7 @@ def save_stock(request):
 
 @api_view(["POST"])
 def delete_stock(request):
+    close_old_connections()
     if request.method == "POST":
         user = request.user.id
         stock = request.data["id"]

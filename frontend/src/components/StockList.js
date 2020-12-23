@@ -30,7 +30,6 @@ class StockList extends Component {
     }
 
     handleAdd(stock) {
-        var self = this;
         stockService.createStockUser(stock).then((result) => {
             window.location.reload()
         })

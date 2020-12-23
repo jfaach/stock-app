@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import UserModal from '../components/UserModal'
 
 function LoginNav(props) {
     const logged_out_nav = (
@@ -19,18 +19,23 @@ function LoginNav(props) {
     );
 
     const logged_in_nav = (
-        <Navbar bg="dark" expand="lg" variant="dark">
-            <Nav className="mr-auto">
-                <Nav.Link
-                    onClick={props.handle_logout}
-                >Logout</Nav.Link>
-            </Nav>
-            <Nav className="mr-sm-10">
-                <NavDropdown title="Settings" id="collasible-nav-dropdown">
-                    <NavDropdown.Item>Timer</NavDropdown.Item>
-                </NavDropdown>
-            </Nav>
-        </Navbar>
+        <div>
+            <Navbar bg="dark" expand="lg" variant="dark">
+                <Nav className="mr-auto">
+                    <Nav.Link
+                        onClick={props.handle_logout}
+                    >Logout</Nav.Link>
+                </Nav>
+                <Nav className="mr-sm-10">
+                    <UserModal
+                        logged_in={props.logged_in}
+                        username={props.username}
+                        email={props.email}
+                    />
+                </Nav>
+            </Navbar>
+        </div>
+
     );
     return <div>{props.logged_in ? logged_in_nav : logged_out_nav}</div>;
 }

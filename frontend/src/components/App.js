@@ -5,6 +5,7 @@ import SignupForm from '../components/SignupForm';
 import '../css/StockList.css';
 import StockList from '../components/StockList';
 import { Switch, Route, Redirect } from "react-router-dom";
+import axios from 'axios';
 
 class App extends Component {
     constructor(props) {
@@ -12,22 +13,24 @@ class App extends Component {
         this.state = {
             displayed_form: '',
             logged_in: localStorage.getItem('token') ? true : false,
-            username: ''
+            username: "",
+            email: ""
         };
     }
 
     componentDidMount() {
         if (this.state.logged_in) {
-            fetch('http://localhost:8000/api/core/current_user/', {
+            axios.get('http://localhost:8000/api/core/current_user/', {
                 headers: {
                     Authorization: `JWT ${localStorage.getItem('token')}`
                 }
             })
-                .then(res => res.json())
-                .then(json => {
-                    console.log(json)
-                    this.setState({ username: json.username });
-                });
+                .then((response) => {
+                    this.setState({
+                        username: response.data.username,
+                        email: response.data.email
+                    });
+                })
         }
     }
 
@@ -125,13 +128,15 @@ class App extends Component {
             <div className="App">
                 <Nav
                     logged_in={this.state.logged_in}
+                    username={this.state.username}
+                    email={this.state.email}
                     display_form={this.display_form}
                     handle_logout={this.handle_logout}
                 />
                 {form}
                 {this.state.logged_in
                     ? <Redirect from="/" to="/stocklist" />
-                    : 'Please Log In'}
+                    : ''}
 
                 <div className="container mt-3">
                     <Switch>

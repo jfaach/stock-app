@@ -7,5 +7,4 @@ class StocksConfig(AppConfig):
     def ready(self):
         from stocks_updater import updater
 
-        # updater.update_stock()
-        # updater.start()
+        updater.start()

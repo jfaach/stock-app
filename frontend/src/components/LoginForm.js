@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import "../css/Login.css"
 
 class LoginForm extends React.Component {
     state = {
@@ -19,24 +22,33 @@ class LoginForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit={e => this.props.handle_login(e, this.state)}>
-                <h4>Log in</h4>
-                <label htmlFor="username">Username</label>
-                <input
-                    type="text"
-                    name="username"
-                    value={this.state.username}
-                    onChange={this.handle_change}
-                />
-                <label htmlFor="password">Password</label>
-                <input
-                    type="password"
-                    name="password"
-                    value={this.state.password}
-                    onChange={this.handle_change}
-                />
-                <input type="submit" />
-            </form>
+            <div className="Login">
+                <Form onSubmit={e => this.props.handle_login(e, this.state)}>
+                    <Form.Group size="lg" controlId="username">
+                        <Form.Label>Username</Form.Label>
+                        <Form.Control
+                            autoFocus
+                            type="text"
+                            name="username"
+                            value={this.state.username}
+                            onChange={this.handle_change}
+                        />
+                    </Form.Group>
+                    <Form.Group size="lg" controlId="password">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control
+                            type="password"
+                            name="password"
+                            value={this.state.password}
+                            onChange={this.handle_change}
+                        />
+                    </Form.Group>
+                    <Button block size="lg" type="submit">
+                        Login
+                    </Button>
+                </Form>
+            </div>
+
         )
     }
 }
