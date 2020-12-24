@@ -27,11 +27,13 @@ function LoginNav(props) {
                     >Logout</Nav.Link>
                 </Nav>
                 <Nav className="mr-sm-10">
-                    <UserModal
+                    {props.logged_in ? <UserModal
                         logged_in={props.logged_in}
                         username={props.username}
                         email={props.email}
-                    />
+                        groups={props.groups}
+                    /> : ''}
+
                 </Nav>
             </Navbar>
         </div>

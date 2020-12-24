@@ -14,7 +14,8 @@ class App extends Component {
             displayed_form: '',
             logged_in: localStorage.getItem('token') ? true : false,
             username: "",
-            email: ""
+            email: "",
+            groups: ""
         };
     }
 
@@ -24,13 +25,13 @@ class App extends Component {
                 headers: {
                     Authorization: `JWT ${localStorage.getItem('token')}`
                 }
+            }).then((response) => {
+                this.setState({
+                    username: response.data.username,
+                    email: response.data.email,
+                    groups: response.data.groups
+                });
             })
-                .then((response) => {
-                    this.setState({
-                        username: response.data.username,
-                        email: response.data.email
-                    });
-                })
         }
     }
 
@@ -53,11 +54,12 @@ class App extends Component {
             })
             .then((data) => {
                 localStorage.setItem('token', data.token);
-                console.log(localStorage.getItem('token'))
                 this.setState({
                     logged_in: true,
                     displayed_form: '',
-                    username: data.user.username
+                    username: data.user.username,
+                    email: data.user.email,
+                    groups: data.user.groups
                 });
             })
             .catch((error) => {
@@ -90,7 +92,8 @@ class App extends Component {
                 this.setState({
                     logged_in: true,
                     displayed_form: '',
-                    username: data.user.username
+                    username: data.user.username,
+                    email: data.user.email
                 });
             })
             .catch((error) => {
@@ -130,6 +133,7 @@ class App extends Component {
                     logged_in={this.state.logged_in}
                     username={this.state.username}
                     email={this.state.email}
+                    groups={this.state.groups}
                     display_form={this.display_form}
                     handle_logout={this.handle_logout}
                 />

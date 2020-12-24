@@ -23,7 +23,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 from core import urls as core_urls
 
 urlpatterns = [
-    path("api/admin/", admin.site.urls),
+    path("admin/", admin.site.urls),
     path("api/token-auth/", obtain_jwt_token),
     path("api/core/", include(core_urls)),
     path("api/stockuser/save", stock_user_views.save_stock),

@@ -57,4 +57,38 @@ export default class StockService {
             }
         )
     }
+    updateTimer(minutes) {
+        const url = `${API_URL}/api/scheduler/1`;
+        return axios.put(url, {
+            minutes: minutes
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `JWT ${localStorage.getItem('token')}`
+            }
+        }).then((response) => {
+            return response.data
+        }).catch(
+            function (error) {
+                console.log('Show error notification!')
+                return false
+            }
+        )
+    }
+    getTimer() {
+        const url = `${API_URL}/api/scheduler/`;
+        return axios.get(url, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `JWT ${localStorage.getItem('token')}`
+            }
+        }).then((response) => {
+            return response.data
+        }).catch(
+            function (error) {
+                console.log('Show error notification!')
+                return false
+            }
+        )
+    }
 }

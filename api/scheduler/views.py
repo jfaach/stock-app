@@ -5,6 +5,7 @@ from rest_framework import status
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Scheduler
 from .serializers import *
+from django.contrib.auth.models import User
 from stocks_updater.updater import update_timer
 
 
@@ -32,6 +33,10 @@ def scheduler_list(request):
 def scheduler_update(request, pk):
     try:
         scheduler = Scheduler.objects.get(pk=pk)
+        user = User.objects.get(pk=request.user.id)
+
+        if not user.is_superuser:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
     except Scheduler.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
