@@ -7,7 +7,7 @@ import "../css/Login.css"
 class LoginForm extends React.Component {
     state = {
         username: '',
-        password: ''
+        password: '',
     };
 
     handle_change = e => {

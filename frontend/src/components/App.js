@@ -6,6 +6,7 @@ import '../css/StockList.css';
 import StockList from '../components/StockList';
 import { Switch, Route, Redirect } from "react-router-dom";
 import axios from 'axios';
+import Alert from 'react-bootstrap/Alert'
 
 class App extends Component {
     constructor(props) {
@@ -15,7 +16,8 @@ class App extends Component {
             logged_in: localStorage.getItem('token') ? true : false,
             username: "",
             email: "",
-            groups: ""
+            groups: "",
+            errorMessage: ""
         };
     }
 
@@ -63,7 +65,7 @@ class App extends Component {
                 });
             })
             .catch((error) => {
-                console.log('error: ' + error);
+                this.setState({ errorMessage: 'Login error !' })
                 this.setState({ logged_in: false });
             });
 
@@ -118,7 +120,8 @@ class App extends Component {
         let form;
         switch (this.state.displayed_form) {
             case 'login':
-                form = <LoginForm handle_login={this.handle_login} />;
+                form = <LoginForm
+                    handle_login={this.handle_login} />;
                 break;
             case 'signup':
                 form = <SignupForm handle_signup={this.handle_signup} />;
@@ -138,6 +141,10 @@ class App extends Component {
                     handle_logout={this.handle_logout}
                 />
                 {form}
+                {this.state.errorMessage &&
+                    <Alert>
+                        {this.state.errorMessage}
+                    </Alert>}
                 {this.state.logged_in
                     ? <Redirect from="/" to="/stocklist" />
                     : ''}

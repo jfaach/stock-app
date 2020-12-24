@@ -7,6 +7,7 @@ from .models import Scheduler
 from .serializers import *
 from django.contrib.auth.models import User
 from stocks_updater.updater import update_timer
+from django.db import close_old_connections
 
 
 @api_view(["GET", "POST"])
@@ -14,6 +15,7 @@ def scheduler_list(request):
     """
     List of Stocks.
     """
+    close_old_connections()
     if request.method == "GET":
         data = []
         schedule = Scheduler.objects.all()
@@ -31,6 +33,7 @@ def scheduler_list(request):
 
 @api_view(["PUT"])
 def scheduler_update(request, pk):
+    close_old_connections()
     try:
         scheduler = Scheduler.objects.get(pk=pk)
         user = User.objects.get(pk=request.user.id)

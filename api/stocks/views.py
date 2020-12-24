@@ -10,11 +10,11 @@ from django.db import close_old_connections
 
 @api_view(["GET", "POST"])
 def stocks_list(request):
-    close_old_connections()
     """
     List of Stocks.
     """
     if request.method == "GET":
+        close_old_connections()
         data = []
         nextPage = 1
         previousPage = 1

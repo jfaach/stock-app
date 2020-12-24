@@ -12,7 +12,7 @@ from django.db import close_old_connections
 # Create your views here.
 @api_view(["GET"])
 def stock_user_list(request):
-    close_old_connections()
+    close_old_connections
     data = []
     nextPage = 1
     previousPage = 1
@@ -32,7 +32,6 @@ def stock_user_list(request):
         nextPage = data.next_page_number()
     if data.has_previous():
         previousPage = data.previous_page_number()
-
     return Response(
         {
             "data": serializer.data,
@@ -69,8 +68,8 @@ def save_stock(request):
 
 @api_view(["POST"])
 def delete_stock(request):
-    close_old_connections()
     if request.method == "POST":
+        close_old_connections()
         user = request.user.id
         stock = request.data["id"]
         stocks = StockUser.objects.filter(id=stock, user=user).delete()
