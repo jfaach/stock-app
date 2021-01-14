@@ -5,7 +5,6 @@ from stock_email.sender import Email
 from scheduler.models import Scheduler
 from datetime import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
-from django.db import close_old_connections, connection
 
 running_job = None
 
@@ -22,7 +21,7 @@ def generate_message(symbol, price, price_min=None, price_max=None):
 
 
 def update_stock():
-    close_old_connections()
+
     stocks = Stock.objects.all()
     for stock in stocks:
         print(stock)
@@ -70,7 +69,7 @@ def update_timer(minutes):
 
 def start():
     global running_job
-    close_old_connections()
+
     scheduler = BackgroundScheduler()
     minutes = Scheduler.objects.first().minutes
     running_job = scheduler.add_job(update_stock, "interval", minutes=minutes)

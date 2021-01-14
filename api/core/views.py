@@ -5,19 +5,17 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import UserSerializer, UserSerializerWithToken, UserEmailSerializer
-from django.db import close_old_connections
 
 
 @api_view(["GET"])
 def current_user(request):
-    close_old_connections()
+
     serializer = UserSerializer(request.user)
     return Response(serializer.data)
 
 
 class UserList(APIView):
     permission_classes = (permissions.AllowAny,)
-    close_old_connections()
 
     def post(self, request, format=None):
         serializer = UserSerializerWithToken(data=request.data)
@@ -27,7 +25,7 @@ class UserList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, format=None):
-        close_old_connections()
+
         try:
             user = User.objects.get(pk=request.user.id)
         except User.DoesNotExist:

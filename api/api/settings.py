@@ -37,7 +37,7 @@ SECRET_KEY = getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = []
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -118,7 +118,7 @@ DATABASES = {
         "PASSWORD": DB_PASSWORD,
         "HOST": DB_HOST,
         "PORT": DB_PORT,
-        "CONN_MAX_AGE": 0,
+        "CONN_MAX_AGE": 7,
     }
 }
 
